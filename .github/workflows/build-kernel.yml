@@ -175,21 +175,6 @@ jobs:
               if [ ${{ env.KSU_REVERT }} = true ]; then
                   git apply $GITHUB_WORKSPACE/patches/KSU_REVERT.patch
         fi
-
-    - name: Setup KernelSU_next
-      if: env.ENABLE_KERNELSU_NEXT == 'true'
-      run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s ${{ env.KERNELSU_TAG }}
-        if [ -d KernelSU-Next ]; then
-            KSU_VERSION="_$(cd KernelSU-Next && expr $(/usr/bin/git rev-list --count HEAD) + 10200)"
-        else
-            KSU_VERSION=""
-        fi
-        echo "UPLOADNAME=-KernelSU-Next$KSU_VERSION" >> $GITHUB_ENV
-        if [ ${{ env.KSU_REVERT }} = true ]; then
-            git apply $GITHUB_WORKSPACE/patches/KSU_REVERT.patch
-        fi
         
     - name: Setup Configuration for Kernel
       run: |
